@@ -2,12 +2,11 @@ import React from 'react';
 import Cards from './Cards'
 
 const CardContainer = (props) => {    
-  console.log('CardContainer - props: ', props)
   return (
     <div>
-      { props.team.map(teammember => {
+      { props.tasks.map(task => {
           return (
-            <Cards teammember={ teammember } />
+            <Cards id={ task.id } task={ task } />
           )
         })
       }
