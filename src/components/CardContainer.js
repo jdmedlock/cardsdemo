@@ -1,5 +1,5 @@
 import React from 'react';
-import Cards from './Cards'
+import Card from './Card'
 
 const CardContainer = (props) => { 
   // An array of task objects is passed in `props`. Iterate over these
@@ -9,7 +9,7 @@ const CardContainer = (props) => {
     <div>
       { props.tasks.map(task => {
           return (
-            <Cards key={ task._id } task={ task } />
+            <Card key={ task._id } task={ task } />
           )
         })
       }

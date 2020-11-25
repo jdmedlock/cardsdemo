@@ -5,7 +5,7 @@ import './App.css'
 
 const App = () => {
 
-  const [isDataLoaded, setIsDataLoaded] = useState(false)
+  const [isTasksLoaded, setIsTasksLoaded] = useState(false)
   const [tasks, setTasks] = useState()
 
   // Retrieve the list of default tasks on the Splash page. We are returning the
@@ -21,7 +21,7 @@ const App = () => {
 
       axios(config)
         .then((response) => {
-          resolve(response.data)
+          resolve(response.data) // Resolve when results are returned
         })
         .catch((error) => {
           console.log(error)
@@ -32,20 +32,20 @@ const App = () => {
   // Retrieve default tasks on the Splash page from the backend server
   // if they haven't already been retrieved.
   useEffect(() => {
-    if (isDataLoaded === false) {
+    if (isTasksLoaded === false) {
       fetchTasks()
         .then(response => {
           setTasks(response)
-          setIsDataLoaded(true)
+          setIsTasksLoaded(true)
         })
     }
-  },[isDataLoaded, setIsDataLoaded])
+  },[isTasksLoaded]) // Dependencies: useEffect invoked when these change
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>React Cards Demo</h1>
-        { isDataLoaded // Generate cards only if the BE request has completed
+        { isTasksLoaded // Generate cards only if the BE request has completed
            ? ( <CardContainer tasks={ tasks } /> )
            : (' ')
         }
