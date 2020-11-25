@@ -1,12 +1,12 @@
 import React from 'react';
 import Cards from './Cards'
 
-const CardContainer = (props) => {    
+const CardContainer = (props) => { 
   return (
     <div>
       { props.tasks.map(task => {
           return (
-            <Cards id={ task.id } task={ task } />
+            <Cards key={ task._id } task={ task } />
           )
         })
       }
