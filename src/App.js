@@ -32,6 +32,7 @@ const App = () => {
   // Retrieve default tasks on the Splash page from the backend server
   // if they haven't already been retrieved.
   useEffect(() => {
+    console.log('isTasksLoaded: ', isTasksLoaded)
     if (isTasksLoaded === false) {
       fetchTasks()
         .then(response => {
@@ -45,9 +46,11 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>React Cards Demo</h1>
-        { isTasksLoaded // Generate cards only if the BE request has completed
+        { 
+          isTasksLoaded // Generate cards only if the BE request has completed
            ? ( <CardContainer tasks={ tasks } /> )
            : (' ')
+         // ( <CardContainer tasks={ tasks } /> )
         }
       </header>
     </div>
