@@ -1,12 +1,15 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import CardContainer from './components/CardContainer'
 import './App.css'
 
 const App = () => {
+  const EMPTY = 'EMPTY'
+  const FAILED = 'FAILED'
+  const LOADED = 'LOADED'
 
-  const [isTasksLoaded, setIsTasksLoaded] = useState(false)
-  const [tasks, setTasks] = useState()
+  const [isTasksLoaded, setIsTasksLoaded] = useState(EMPTY) // Use ref to eliminate need for setter function
+  const tasks = useRef()
 
   // Retrieve the list of default tasks on the Splash page. We are returning the
   // a promise which will be resolved when the request has successfully 
@@ -24,20 +27,22 @@ const App = () => {
           resolve(response.data) // Resolve when results are returned
         })
         .catch((error) => {
-          console.log(error)
+          setIsTasksLoaded(FAILED)
         })
     })
   }
 
   // Retrieve default tasks on the Splash page from the backend server
-  // if they haven't already been retrieved.
+  // if they haven't already been retrieved. Note that this will be
+  // invoked whenever the value of `isTaskLoaded` changes. This is why
+  // this `useEffect` is called twice
   useEffect(() => {
     console.log('isTasksLoaded: ', isTasksLoaded)
-    if (isTasksLoaded === false) {
+    if (isTasksLoaded === EMPTY) {
       fetchTasks()
         .then(response => {
-          setTasks(response)
-          setIsTasksLoaded(true)
+          tasks.current = response
+          setIsTasksLoaded(LOADED)
         })
     }
   },[isTasksLoaded]) // Dependencies: useEffect invoked when these change
@@ -46,11 +51,10 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>React Cards Demo</h1>
-        { 
-          isTasksLoaded // Generate cards only if the BE request has completed
+        { isTasksLoaded === LOADED // Generate cards only if the BE request has completed
            ? ( <CardContainer tasks={ tasks } /> )
-           : (' ')
-         // ( <CardContainer tasks={ tasks } /> )
+           : isTasksLoaded === FAILED 
+              ? (<p>Fetch Failure</p>) : (' ')
         }
       </header>
     </div>
