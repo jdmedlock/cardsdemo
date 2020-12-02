@@ -52,7 +52,7 @@ const App = () => {
       <header className="App-header">
         <h1>React Cards Demo</h1>
         { isTasksLoaded === LOADED // Generate cards only if the BE request has completed
-           ? ( <CardContainer tasks={ tasks } /> )
+           ? ( <CardContainer tasks={ tasks.current } /> )
            : isTasksLoaded === FAILED 
               ? (<p>Fetch Failure</p>) : (' ')
         }
